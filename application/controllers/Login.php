@@ -7,6 +7,7 @@ class Login extends CI_Controller {
 
   public function __construct(){
     parent::__construct();
+    $config['csrf_protection']   = FALSE;
      $this->csrf = array(
         'name' => $this->security->get_csrf_token_name(),
         'hash' => $this->security->get_csrf_hash()

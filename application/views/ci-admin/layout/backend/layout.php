@@ -147,7 +147,7 @@
           //data: {file: name },
           cache:false,
           dataType: 'html',
-          data: {file: name }
+          data: {file: name },
         });
 
         // remove the thumbnail

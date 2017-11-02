@@ -7,10 +7,14 @@ class Ci_Image extends CI_Controller
 
   private $CI;
   private $upload_path = "./uploads";
-
+  public  $csrf = null;
   public function __construct(){
     parent::__construct();
     $this->CI =& get_instance();
+     $this->csrf = array(
+        'name' => $this->security->get_csrf_token_name(),
+        'hash' => $this->security->get_csrf_hash()
+   );
   }
 
   public function index()
@@ -20,7 +24,7 @@ class Ci_Image extends CI_Controller
    public function slider()
   {
     $this->template->set('title', 'Dashboard | Klorofil - Free Bootstrap Dashboard Template');
-    $this->template->load('layout', 'contents' , 'ci-admin/image/image-slider.php');
+    $this->template->load('layout', 'contents' , 'ci-admin/image/image-slider.php',array('csrf'=>$this->csrf));
   }
   public function upload()
   {
@@ -39,7 +43,7 @@ class Ci_Image extends CI_Controller
   public function remove()
   {
 
-    $file = $this->input->post("file");
+    $file = $this->security->xss_clean($this->input->post("file"));
     if ($file && file_exists($this->upload_path . "/" . $file)) {
       unlink($this->upload_path . "/" . $file);
     }
