@@ -126,7 +126,7 @@
   <script src="<?php echo base_url('assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js')?>"></script>
   <script src="<?php echo base_url('assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js')?>"></script>
   <script src="<?php echo base_url('assets/vendor/chartist/js/chartist.min.js')?>"></script>
-
+  <script src="<?php echo base_url('assets/scripts/klorofil-common.js')?>"></script>
   <!-- -->
   <script src="<?php echo base_url(); ?>vendor/dropzone/dropzone.min.js"></script>
 
@@ -144,7 +144,6 @@
         $.ajax({
           type: "post",
           url: "<?php echo site_url("ci-admin/remove") ?>",
-          //data: {file: name },
           cache:false,
           dataType: 'html',
           data: {file: name },
@@ -164,7 +163,7 @@
             $.each(data, function(key, value) {
               var mockFile = value;
               me.emit("addedfile", mockFile);
-              me.emit("thumbnail", mockFile, "<?php echo base_url(); ?>uploads/" + value.name);
+              me.emit("thumbnail", mockFile, "<?php echo base_url(); ?>uploads/multi-slider/" + value.name);
               me.emit("complete", mockFile);
             });
           }

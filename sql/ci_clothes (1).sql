@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th10 31, 2017 lúc 04:29 PM
+-- Thời gian đã tạo: Th10 02, 2017 lúc 05:53 PM
 -- Phiên bản máy phục vụ: 5.7.20-0ubuntu0.16.04.1
 -- Phiên bản PHP: 7.0.22-0ubuntu0.16.04.1
 
@@ -19,6 +19,37 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `ci_clothes`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `slider`
+--
+
+CREATE TABLE `slider` (
+  `id` int(10) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  `url` varchar(100) NOT NULL,
+  `title` varchar(10) NOT NULL,
+  `alt` varchar(10) NOT NULL,
+  `active` tinyint(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Đang đổ dữ liệu cho bảng `slider`
+--
+
+INSERT INTO `slider` (`id`, `image`, `url`, `title`, `alt`, `active`) VALUES
+(1, '1-115x148.jpg', 'nhut-laravel.dev', 'tui test', 'tui test', 1),
+(2, '1-115x1481.jpg', '', '', '', 0),
+(3, '1.jpg', '', '', '', 0),
+(4, '11.jpg', '', '', '', 0),
+(5, '12-480x635.jpg', '', '', '', 0),
+(6, '18-115x148.jpg', '', '', '', 0),
+(7, '18-480x635.jpg', '', '', '', 0),
+(8, '18-500x600.jpg', '', '', '', 0),
+(9, '18.jpg', '', '', '', 0),
+(10, 'blog2-100x100.png', '', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -45,6 +76,12 @@ INSERT INTO `user` (`id`, `user`, `pass`, `group_admin`) VALUES
 --
 
 --
+-- Chỉ mục cho bảng `slider`
+--
+ALTER TABLE `slider`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Chỉ mục cho bảng `user`
 --
 ALTER TABLE `user`
@@ -54,6 +91,11 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
 
+--
+-- AUTO_INCREMENT cho bảng `slider`
+--
+ALTER TABLE `slider`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT cho bảng `user`
 --
