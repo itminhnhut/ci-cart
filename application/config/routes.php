@@ -56,3 +56,8 @@ $route['login/getLogin'] = 'login/getLogin';
 $route['ci-admin'] = 'ci_Admin';
 $route['login'] = 'login';
 $route['login/logout'] = 'login/logout';
+$route['ci-admin/image-slider'] = 'ci_Image/slider';
+$route['ci-admin/upload'] = 'ci_Image/upload';
+$route['ci-admin/list_files'] = 'ci_Image/list_files';
+
+$route['ci-admin/remove'] = 'ci_Image/remove';

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
-  <link rel="stylesheet" type="text/css" href="vendor/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="vendor/css/login.css">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url('vendor/css/bootstrap.min.css') ?> ">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url('vendor/css/login.css') ?> ">
 </head>
 <body>
   <div class="container">
@@ -12,7 +12,7 @@
     <h1>Login Form Admin</h1>
 
     <div class="form">
-      <form class="login-form"  method="post" action="login">
+      <form class="login-form"  method="post" action="<?php echo base_url('login') ?>">
         <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
          <?php
           if(isset($data) ==1):
@@ -34,5 +34,5 @@
 </div>
 </body>
 </html>
-<script type="text/javascript" src="vendor/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="vendor/js/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url('vendor/js/bootstrap.min.js')?>"></script>
+<script type="text/javascript" src="<?php echo base_url('vendor/js/jquery.min.js')?>"></script>

@@ -5,7 +5,6 @@ class Ci_Admin extends CI_Controller {
 
   private $CI;
 
-
   public function __construct(){
     parent::__construct();
     $this->CI =& get_instance();
