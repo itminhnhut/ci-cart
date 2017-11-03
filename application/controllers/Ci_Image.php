@@ -59,7 +59,8 @@
           $_FILES['file']['error']= $files['file']['error'][$i];
           $_FILES['file']['size']= $files['file']['size'][$i];
 
-          $ext = end((explode(".", $files['file']['name'][$i])));
+          $rs_ext = explode(".", $files['file']['name'][$i]);
+          $ext    = end($rs_ext);
           $file_name = time().$i."_".($i+1).".".$ext;
           $_FILES['file']['name'] = $file_name;
 

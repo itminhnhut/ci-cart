@@ -10,6 +10,7 @@ $(document).ready(function() {
    uploadMultiple: true,
    removedfile: function(file) {
      var name = file.name;
+     console.log(name);
      $.ajax({
        type: "post",
        url: url+'ci-admin/remove',
@@ -25,7 +26,9 @@ $(document).ready(function() {
 
       init: function() {
         var me = this;
-
+        this.on("success", function(file, response){
+            location.reload();
+        });
         $.get(url+'ci-admin/list_files', function(data) {
           // if any files already in server show all here
           if (data.length > 0) {
