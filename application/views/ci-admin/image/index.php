@@ -1,9 +1,9 @@
-
 <h2>Slider Table</h2>
+   <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
 <table class="table">
    <thead>
       <tr>
-         <th>id</th>
+         <th>STT</th>
          <th>Image</th>
          <th>Url</th>
          <th>Title</th>
@@ -15,15 +15,18 @@
       </tr>
    </thead>
 
-   <tbody>
+   <tbody id="sortable">
 
       <?php
          //`id`, `image`, `url`, `title`, `alt`, `active`
+          $i = 1;
           foreach($data as $key => $value):
       ?>
-      <tr>
-         <td><?php echo $value['id'] ?></td>
-         <td><?php echo $value['image'] ?></td>
+      <tr class="ui-state-default" id="item-<?php echo $value['id'] ?>">
+         <td><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><?php echo $i++; ?></td>
+         <td>
+             <img class="img-thumbnail"   src="<?php echo base_url('uploads/multi-slider/'.$value['image']) ?>" >
+         </td>
          <td><?php echo $value['url'] ?></td>
          <td><?php echo $value['title'] ?></td>
          <td><?php echo $value['alt'] ?></td>

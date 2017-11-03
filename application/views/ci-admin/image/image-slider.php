@@ -1,4 +1,3 @@
-
 <h2>Upload multi Image</h2>
 <div id="dropzone">
   <form action="/upload" class="dropzone" id="my-dropzone">

@@ -31,10 +31,15 @@
   <link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url('assets/img/apple-icon.png') ?>">
   <link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url('assets/img/favicon.png') ?>">
   <!-- -->
-  <link rel="stylesheet" href="<?php echo base_url(); ?>vendor/dropzone/dropzone.min.css">
+  <link rel="stylesheet" href="<?php echo base_url('vendor/dropzone/dropzone.min.css'); ?>">
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/mysite.css') ?>">
+
 </head>
 
 <body>
+  <input type="hidden" name="BASE_URL" value="<?php echo base_url(); ?>" >
   <!-- WRAPPER -->
   <div id="wrapper">
     <!-- NAVBAR -->
@@ -50,7 +55,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
 
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span><?php echo $this->session->userdata['user'] ?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url('assets/img/user.png') ?>" class="img-circle" alt="Avatar"> <span><?php echo $this->session->userdata['user'] ?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
               <ul class="dropdown-menu">
                 <li><a href="<?php echo base_url('login/logout') ?>"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
               </ul>
@@ -105,6 +110,7 @@
       <div class="main-content">
         <div class="container-fluid">
           <div class="row">
+            <?php echo $breadcrum; ?>
             <?php echo $contents;?>
           </div>
         </div>
@@ -121,7 +127,10 @@
   </div>
   <!-- END WRAPPER -->
   <!-- Javascript -->
-  <script src="<?php echo base_url('assets/vendor/jquery/jquery.min.js')?>"></script>
+   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <!-- <script src="<?php echo base_url('assets/vendor/jquery/jquery.min.js')?>"></script> -->
   <script src="<?php echo base_url('assets/vendor/bootstrap/js/bootstrap.min.js')?>"></script>
   <script src="<?php echo base_url('assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js')?>"></script>
   <script src="<?php echo base_url('assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js')?>"></script>
@@ -130,47 +139,27 @@
   <!-- -->
   <script src="<?php echo base_url(); ?>vendor/dropzone/dropzone.min.js"></script>
 
+
+  <?php echo $scripts_header;?>
   <script>
+  $( function() {
+    $( "#sortable" ).sortable({
+        opacity: 0.6,
+        cursor: 'move',
+        update: function(event, ui){
+           var order = $(this).sortable("serialize");
+           $.ajax({
+             url: "<?php echo base_url('ci-admin/order-image') ?>",
+             type: 'POST',
+             data: {'<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>','data':order},
+             success: function (data) {
 
-    Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone("#my-dropzone", {
-      url: "<?php echo site_url("ci-admin/upload") ?>",
-      acceptedFiles: "image/*",
-      addRemoveLinks: true,
-      autoProcessQueue: true,
-      autoDiscover: false,
-      removedfile: function(file) {
-        var name = file.name;
-        $.ajax({
-          type: "post",
-          url: "<?php echo site_url("ci-admin/remove") ?>",
-          cache:false,
-          dataType: 'html',
-          data: {file: name },
-        });
+             }
 
-        // remove the thumbnail
-        var previewElement;
-        return (previewElement = file.previewElement) != null ? (previewElement.parentNode.removeChild(file.previewElement)) : (void 0);
-      },
-
-      init: function() {
-        var me = this;
-
-        $.get("<?php echo site_url("ci-admin/list_files") ?>", function(data) {
-          // if any files already in server show all here
-          if (data.length > 0) {
-            $.each(data, function(key, value) {
-              var mockFile = value;
-              me.emit("addedfile", mockFile);
-              me.emit("thumbnail", mockFile, "<?php echo base_url(); ?>uploads/multi-slider/" + value.name);
-              me.emit("complete", mockFile);
-            });
-          }
-        });
-      }
-
+           });
+         }
     });
+  } );
   </script>
 
 </body>

@@ -450,7 +450,10 @@ $config['global_xss_filtering'] = FALSE;
 */
 //$config['csrf_protection'] = true;
 
-if (stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/upload') || stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/remove') ) {
+if (  stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/upload') ||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/remove') ||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/order-image')
+   ){
    $config['csrf_protection']    = false;
 }else{
    $config['csrf_protection']    = TRUE;
