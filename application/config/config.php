@@ -452,7 +452,23 @@ $config['global_xss_filtering'] = FALSE;
 
 if (  stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/upload') ||
       stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/remove') ||
-      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/order-image')
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/order-image')||
+
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/banner/upload')||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/banner/remove')||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/banner/order-banner')||
+
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/footer/upload')||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/footer/remove')||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/footer/order-banner')||
+
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/order-menu')||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/data-menu')||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/delete')||
+
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/upload')||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/remove')
+
    ){
    $config['csrf_protection']    = false;
 }else{

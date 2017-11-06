@@ -11,7 +11,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title><?php echo $title;?></title>
+  <title><?php  if(isset($title)) echo $title;else echo 'Dashboard | Klorofil - Free Bootstrap Dashboard Template';?></title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -35,7 +35,8 @@
 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/mysite.css') ?>">
-
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/design.css') ?>">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/jquery.dataTables.min.css') ?>">
 </head>
 
 <body>
@@ -72,13 +73,23 @@
           <ul class="nav">
             <li><a href="index.html" class="active"><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
 
-            <li><a href="elements.html" class=""><i class="lnr lnr-menu"></i> <span>Menu</span></a></li>
-
             <li>
-              <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-chart-bars"></i> <span>Image</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+              <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-menu"></i> <span>Menu</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
               <div id="subPages" class="collapse ">
                 <ul class="nav">
+                   <li><a href="<?php echo base_url('ci-admin/menu'); ?>" class="">Menu</a></li>
+                   <li><a href="<?php echo base_url('ci-admin/menu/order'); ?>" class="">Order</a></li>
+                </ul>
+              </div>
+            </li>
+
+            <li>
+              <a href="#subImage" data-toggle="collapse" class="collapsed"><i class="lnr lnr-chart-bars"></i> <span>Image</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+              <div id="subImage" class="collapse ">
+                <ul class="nav">
                   <li><a href="<?php echo base_url('ci-admin/image-slider'); ?>" class="">Image Slider</a></li>
+                  <li><a href="<?php echo base_url('ci-admin/image-banner'); ?>" class="">Image Baner</a></li>
+                  <li><a href="<?php echo base_url('ci-admin/image-footer'); ?>" class="">Image Footer</a></li>
                 </ul>
               </div>
             </li>
@@ -127,7 +138,8 @@
   </div>
   <!-- END WRAPPER -->
   <!-- Javascript -->
-   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
   <!-- <script src="<?php echo base_url('assets/vendor/jquery/jquery.min.js')?>"></script> -->
@@ -137,9 +149,9 @@
   <script src="<?php echo base_url('assets/vendor/chartist/js/chartist.min.js')?>"></script>
   <script src="<?php echo base_url('assets/scripts/klorofil-common.js')?>"></script>
   <!-- -->
-  <script src="<?php echo base_url(); ?>vendor/dropzone/dropzone.min.js"></script>
-
-
+  <script src="<?php echo base_url('vendor/dropzone/dropzone.min.js'); ?>"></script>
+  <script type="text/javascript" src="https://ilikenwf.github.io/jquery.mjs.nestedSortable.js"></script>
+  <script src="<?php echo base_url('assets/js/jquery.dataTables.min.js'); ?>"></script>
   <?php echo $scripts_header;?>
   <script>
   $( function() {
@@ -155,13 +167,103 @@
              success: function (data) {
 
              }
-
            });
          }
     });
-  } );
+
+    $( "#sortable-baner" ).sortable({
+        opacity: 0.6,
+        cursor: 'move',
+        update: function(event, ui){
+           var order = $(this).sortable("serialize");
+           console.log(order);
+           $.ajax({
+             url: "<?php echo base_url('ci-admin/banner/order-banner') ?>",
+             type: 'POST',
+             data: {'<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>','data':order},
+             success: function (data) {
+
+             }
+           });
+         }
+    });
+
+     $( "#sortable-footer" ).sortable({
+        opacity: 0.6,
+        cursor: 'move',
+        update: function(event, ui){
+           var order = $(this).sortable("serialize");
+           console.log(order);
+           $.ajax({
+             url: "<?php echo base_url('ci-admin/footer/order-footer') ?>",
+             type: 'POST',
+             data: {'<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>','data':order},
+             success: function (data) {
+
+             }
+           });
+         }
+    });
+  });
+
+
   </script>
 
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.sortable-menu').nestedSortable({
+        forcePlaceholderSize: true,
+        items: 'li',
+        handle: '.handle',
+        placeholder: 'menu-highlight',
+        listType: 'ul',
+        maxLevels: 3,
+        opacity: .6,
+        update : function (){
+          var orderNew = $(this).nestedSortable('serialize',{startDepthCount: 0});
+          $.ajax({
+            type: "post",
+             url: "<?php echo base_url('ci-admin/menu/order-menu') ?>",
+            data: {'<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>','list':orderNew}
+            });
+        }
+      });
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#dataMenu').DataTable( {
+        "ajax": "<?php echo base_url('ci-admin/menu/data-menu') ?>"
+      });
+
+      $("#dataMenu").on("click", ".menudelete #menuDelete", function(){
+        var table = $('#dataMenu').DataTable();
+        var mydata = $(this).attr('value');
+        var name = $(this).attr('data');
+        var conf=confirm("Are you sure you want to delet this : "+name);
+        if(conf){
+           var row = $(this).parents('tr');
+          // table.row( $(this).parents('tr') ).remove().draw();
+           $.ajax({
+              type : "post",
+              url: "<?php echo base_url('ci-admin/menu/delete') ?>",
+              data: {'<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>','idMenu':mydata},
+              async:false,
+              success: function(data){
+                   if(data ==1)
+                   {
+                       row.remove();
+                   }
+               }
+           });
+        }
+        else {
+          return false;
+        }
+      });
+
+    });
+  </script>
 </body>
 
 </html>
