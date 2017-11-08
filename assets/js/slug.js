@@ -35,5 +35,11 @@ $(document).ready(function() {
         $('.form-create-menu #slug').val(slug);
    });
 
+    $('.form-create-product #name').blur(function(){
+        var name = $(this).val();
+        var slug = changeSlug(name);
+        $('.form-create-product #slug').val(slug);
+   });
+
 
 });

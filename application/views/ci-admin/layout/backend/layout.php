@@ -77,6 +77,7 @@
               <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-menu"></i> <span>Menu</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
               <div id="subPages" class="collapse ">
                 <ul class="nav">
+                   <li><a href="<?php echo base_url('ci-admin/menu/create'); ?>" class="">Create</a></li>
                    <li><a href="<?php echo base_url('ci-admin/menu'); ?>" class="">Menu</a></li>
                    <li><a href="<?php echo base_url('ci-admin/menu/order'); ?>" class="">Order</a></li>
                 </ul>
@@ -94,7 +95,14 @@
               </div>
             </li>
 
-            <li><a href="panels.html" class=""><i class="lnr lnr-cog"></i> <span>Product</span></a></li>
+            <li>
+              <a href="#subProduct" data-toggle="collapse" class="collapsed"><i class="fa fa-product-hunt"></i> <span>Product</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+              <div id="subProduct" class="collapse ">
+                <ul class="nav">
+                  <li><a href="<?php echo base_url('ci-admin/product'); ?>" class="">Product</a></li>
+                </ul>
+              </div>
+            </li>
             <li><a href="notifications.html" class=""><i class="lnr lnr-cloud-upload"></i> <span>Image for Product</span></a></li>
             <li><a href="notifications.html" class=""><i class="lnr lnr-cart"></i> <span>Order</span></a></li>
 
@@ -139,8 +147,8 @@
   <!-- END WRAPPER -->
   <!-- Javascript -->
 
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="<?php echo base_url('assets/js/jquery-1.12.4.js'); ?>"></script>
+  <script src="<?php echo base_url('assets/js/jquery-ui.js'); ?>"></script>
 
   <!-- <script src="<?php echo base_url('assets/vendor/jquery/jquery.min.js')?>"></script> -->
   <script src="<?php echo base_url('assets/vendor/bootstrap/js/bootstrap.min.js')?>"></script>
@@ -150,7 +158,7 @@
   <script src="<?php echo base_url('assets/scripts/klorofil-common.js')?>"></script>
   <!-- -->
   <script src="<?php echo base_url('vendor/dropzone/dropzone.min.js'); ?>"></script>
-  <script type="text/javascript" src="https://ilikenwf.github.io/jquery.mjs.nestedSortable.js"></script>
+  <script type="text/javascript" src="<?php echo base_url('assets/js/a.js'); ?>"></script>
   <script src="<?php echo base_url('assets/js/jquery.dataTables.min.js'); ?>"></script>
   <?php echo $scripts_header;?>
   <script>
@@ -204,6 +212,23 @@
            });
          }
     });
+
+     $( "#sortable-menu" ).sortable({
+        opacity: 0.6,
+        cursor: 'move',
+        update: function(event, ui){
+           var order = $(this).sortable("serialize");
+           console.log(order);
+           $.ajax({
+             url: "<?php echo base_url('ci-admin/menu/order-menu-img') ?>",
+             type: 'POST',
+             data: {'<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>','data':order},
+             success: function (data) {
+
+             }
+           });
+         }
+    });
   });
 
 
@@ -215,7 +240,7 @@
         forcePlaceholderSize: true,
         items: 'li',
         handle: '.handle',
-        placeholder: 'menu-highlight',
+        // placeholder: 'menu-highlight',
         listType: 'ul',
         maxLevels: 3,
         opacity: .6,

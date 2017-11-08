@@ -20,7 +20,15 @@
 
     public function index()
     {
-       $this->template->load('layout', 'contents' , 'ci-admin/menu/index.php',array('csrf'=>$this->csrf));
+       $breadcrum = array(
+        'br1' => array('name' => 'Home', 'url'=>'ci-admin'),
+        'br2' => array('name' => 'Menu'),
+      );
+
+      $query = $this->db->select('id, img')->from('menu')->where('status_menu_img',1)->order_by('menu_image','asc')->get()->result_array();
+
+      $this->template->breadcrum($breadcrum);
+      $this->template->load('layout', 'contents' , 'ci-admin/menu/index.php',array('orderimg'=>$query,'csrf'=>$this->csrf));
     }
 
     public function dataMenu(){
@@ -68,10 +76,11 @@
               'alt'              => $alt,
               'des'              => $des,
               'slug'             => $slug,
-              'img'              => '',
+              'img'              => 0,
               'menu_image'       => '',
               'order_menu'       => 0,
               'parent'           => 0,
+              'status_menu_img'  => 0,
               'status'           => $status
             );
             $this->db->insert('menu', $data);
@@ -172,13 +181,20 @@
      */
     public function menuImage($id)
     {
-       $query = $this->db->select('img')->from('menu')->where('id',$id)->get();
-       $data = $query->result_array();
+       $data = $id;
        $this->template->add_js('assets/js/dropzone_multi_menu.js');
+
+       $breadcrum = array(
+        'br1' => array('name' => 'Home', 'url'=>'ci-admin'),
+        'br2' => array('name' => 'Menu','url'=>'ci-admin/menu'),
+        'br3' => array('name' => 'Upload Image', 'active' =>'active'),
+      );
+
+      $this->template->breadcrum($breadcrum);
        $this->template->load('layout','contents','ci-admin/menu/image.php',array('data'=>$data,'csrf'=>$this->csrf));
     }
 
-     public function upload()
+     public function upload($id)
     {
       if ( ! empty($_FILES))
       {
@@ -199,17 +215,22 @@
           $_FILES['file']['name'] = $file_name;
 
           $this->upload->initialize($this->set_upload_options($file_name));
-          $this->upload->do_upload("file");
-          // if($this->upload->do_upload("file")){
-          //   $file = array(
-          //     'image'           =>  $file_name,
-          //     'url'             => '',
-          //     'title'           => '',
-          //     'alt'             => '',
-          //     'active'          => 0
-          //   );
-          //   $this->db->insert('banner', $file);
-          // }
+          if($this->upload->do_upload("file"))
+          {
+            $filesold = $this->db->select('img')->from('menu')->where('id',$id)->get()->result_array();
+            if(count($filesold) > 0){
+              foreach ($filesold as $file) {
+                unlink($this->upload_path . "/" . $file['img']);
+              }
+            }
+            $data = array(
+              'img'              => $file_name,
+              'status_menu_img'  => 1
+            );
+
+            $this->db->where('id', $id);
+            $this->db->update('menu', $data);
+          }
         }
       }
     }
@@ -228,31 +249,54 @@
     public function remove()
     {
       $file = $this->security->xss_clean($this->input->post("file"));
+      $id = $this->security->xss_clean($this->input->post("id"));
       if ($file && file_exists($this->upload_path . "/" . $file)) {
         unlink($this->upload_path . "/" . $file);
-      }
-    //return $this->db->delete('slider', array('image' => $file));
-      // $this->db->where('image', $file);
-      // $this->db->delete('banner');
-    }
-
-    public function list_files()
-    {
-      $files = get_filenames($this->upload_path);
-    // we need name and size for dropzone mockfile
-      foreach ($files as &$file) {
-        $file = array(
-          'name' => $file,
-          'size' => filesize($this->upload_path . "/" . $file)
+        $data = array(
+          'img'              => 0,
+          'status_menu_img'  => 0
         );
 
+        $this->db->where('id', $id);
+        $this->db->update('menu', $data);
       }
-      header("Content-type: text/json");
-        header("Content-type: application/json");
-        echo json_encode($files);
     }
 
+    public function list_files($id)
+    {
+      $files = $this->db->select('img')->from('menu')->where('id',$id)->get()->result_array();
+      if(count($files) > 0){
+        foreach ($files as &$file) {
+          $file = array(
+            'name' => $file['img'],
+            'size' => filesize($this->upload_path . "/" . $file['img'])
+          );
+         }
+      }
+      else{
+          $files = [];
+      }
 
+      header("Content-type: text/json");
+      header("Content-type: application/json");
+      echo json_encode($files);
+    }
+
+   public function orderMenuImg(){
+      $items = $this->security->xss_clean($this->input->post('data'));
+      $total_items = count($this->security->xss_clean($this->input->post('data')));
+      $list = explode('&' , $items);
+      $i = 1;
+      foreach ($list as $key => $value) {
+          $data = explode('item[]=' , $value);
+          $rs = array(
+                'id'           => $data[1],
+                'menu_image'  => $i++
+          );
+          $this->db->where('id', $rs['id']);
+          $this->db->update('menu', $rs);
+      }
+    }
 
    }
 ?>

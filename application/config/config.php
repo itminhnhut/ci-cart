@@ -466,8 +466,12 @@ if (  stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/upload'
       stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/data-menu')||
       stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/delete')||
 
-      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/upload')||
-      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/remove')
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/upload/:num')||
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/remove')||
+
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/menu/order-menu-img') ||
+
+      stripos($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],'/ci-admin/product/ajax-menu-product')
 
    ){
    $config['csrf_protection']    = false;

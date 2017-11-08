@@ -1,13 +1,15 @@
 $(document).ready(function() {
  var url = $("input[name='BASE_URL']").val();
+ var idImage = $('#my-dropzone-menu #imagemenu').attr('value');
  Dropzone.autoDiscover = false;
  var myDropzone = new Dropzone("#my-dropzone-menu", {
-   url: url+'ci-admin/menu/upload',
+   url: url+'ci-admin/menu/upload/'+idImage,
    acceptedFiles: "image/*",
    addRemoveLinks: true,
    autoProcessQueue: true,
    autoDiscover: false,
    uploadMultiple: true,
+   maxFiles: 1,
    removedfile: function(file) {
      var name = file.name;
      console.log(name);
@@ -16,7 +18,7 @@ $(document).ready(function() {
        url: url+'ci-admin/menu/remove',
        cache:false,
        dataType: 'html',
-       data: {file: name },
+       data: {file: name ,'id':idImage},
      });
 
         // remove the thumbnail
@@ -29,7 +31,8 @@ $(document).ready(function() {
         this.on("success", function(file, response){
             location.reload();
         });
-        $.get(url+'ci-admin/menu/list_files', function(data) {
+
+        $.get(url+'ci-admin/menu/list_files/'+idImage, function(data) {
           // if any files already in server show all here
           if (data.length > 0) {
             $.each(data, function(key, value) {

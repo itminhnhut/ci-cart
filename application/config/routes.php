@@ -96,8 +96,16 @@ $route['ci-admin/menu/order-menu']    = 'ci_menu/orderMenu';
 $route['ci-admin/menu/data-menu']     = 'ci_menu/dataMenu';
 $route['ci-admin/menu/edit/(:num)']   = 'ci_menu/edit/$1';
 $route['ci-admin/menu/delete']        = 'ci_menu/delete';
-$route['ci-admin/menu/image/(:num)']        = 'ci_menu/menuImage/$1';
+$route['ci-admin/menu/image/(:num)']  = 'ci_menu/menuImage/$1';
 
-$route['ci-admin/menu/upload']                = 'ci_menu/upload';
+$route['ci-admin/menu/upload/(:num)']         = 'ci_menu/upload/$1';
 $route['ci-admin/menu/remove']                = 'ci_menu/remove';
-$route['ci-admin/menu/list_files']            = 'ci_menu/list_files';
+$route['ci-admin/menu/list_files/(:num)']     = 'ci_menu/list_files/$1';
+$route['ci-admin/menu/order-menu-img']          = 'ci_menu/orderMenuImg';
+
+/**
+ * Product
+ */
+$route['ci-admin/product']               = 'ci_product/index';
+$route['ci-admin/product/create']               = 'ci_product/create';
+$route['ci-admin/product/ajax-menu-product']		= 'ci_product/ajaxMenu';
